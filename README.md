@@ -1,4 +1,4 @@
-# Virgil e3kit iOS Demo
+# Virgil e3kit Web Demo
 
 ## Introduction
 
