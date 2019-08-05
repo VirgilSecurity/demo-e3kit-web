@@ -1,10 +1,6 @@
 const EThree = E3kit.EThree;
 
 class Device {
-    identity = '';
-    eThree = null;
-    authToken = null;
-
     constructor(identity) {
         this.identity = identity;
     }
@@ -79,9 +75,10 @@ class Device {
                 //# start of snippet: e3kit_rotate_private_key
                 await eThree.rotatePrivateKey()
                 //# end of snippet: e3kit_rotate_private_key
+                throw 'Identitity already registered. Rotated private key instead.'
+            } else {
+                throw err;
             }
-
-            throw err;
         }
     }
 

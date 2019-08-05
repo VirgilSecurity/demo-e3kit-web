@@ -46,17 +46,35 @@ async function lookupPublicKeys() {
     bobLookup = await alice.lookupPublicKeys([bob.identity]).catch(e => log(`Failed looking up ${bob.identity}'s public key: ${e}`));
 
     log(`Looking up ${alice.identity}'s public key`);
-    aliceLookup = await bob.lookupPublicKeys([alice.identity]).catch(e => log(`Failed lookig up ${alice.identity}'s public key: ${e}`));
+    aliceLookup = await bob.lookupPublicKeys([alice.identity]).catch(e => log(`Failed looking up ${alice.identity}'s public key: ${e}`));
 }
 
 async function encryptAndDecrypt() {
-    let aliceEncryptedText = await alice.encrypt('Hello Bob!', bobLookup);
-    log(`Alice encrypts and signs: '${aliceEncryptedText}'`);
-    let aliceDecryptedText = await bob.decrypt(aliceEncryptedText, aliceLookup[alice.identity]);
-    log(`Bob decrypts and verifies Alice's signature: '${aliceDecryptedText}'`);
+    try {
+        let aliceEncryptedText = await alice.encrypt(`Hello ${bob.identity}!`, bobLookup);
+        log(`${alice.identity} encrypts and signs: '${aliceEncryptedText}'`);
+    } catch(err) {
+        log(`${alice.identity} failed encrypting and/or signing: '${err}'`)
+    }
 
-    let bobEncryptedText = await bob.encrypt('Hello Alice!', aliceLookup);
-    log(`Bob encrypts and signs: '${bobEncryptedText}'`);
-    let bobDecryptedText = await alice.decrypt(bobEncryptedText, bobLookup[bob.identity]);
-    log(`Alice decrypts and verifies Bob's signature: '${bobDecryptedText}'`);
+    try {
+        let aliceDecryptedText = await bob.decrypt(aliceEncryptedText, aliceLookup[alice.identity]);
+        log(`${bob.identity} decrypts and verifies ${alice.identity}'s signature: '${aliceDecryptedText}'`);
+    } catch(err) {
+        log(`${bob.identity} failed decrypting and/or verifying: '${err}'`)
+    }
+
+    try {
+        let bobEncryptedText = await bob.encrypt(`Hello ${alice.identity}!`, aliceLookup);
+        log(`${bob.identity} encrypts and signs: '${bobEncryptedText}'`);
+    } catch(err) {
+        log(`${bob.identity} failed encrypting and/or signing: '${err}'`)
+    }
+
+    try{
+        let bobDecryptedText = await alice.decrypt(bobEncryptedText, bobLookup[bob.identity]);
+        log(`${alice.identity} decrypts and verifies ${bob.identity}'s signature: '${bobDecryptedText}'`);
+    } catch(err) {
+        log(`${alice.identity} failed decrypting and/or verifying: '${err}'`)
+    }
 }
