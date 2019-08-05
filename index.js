@@ -1,5 +1,5 @@
 const log = e => {
-    document.getElementById("logs").innerHTML += `${e}<br/>`;
+    document.getElementById('logs').innerHTML += `${e}<br/>`;
 }
 
 const alice = new Device('Alice');
