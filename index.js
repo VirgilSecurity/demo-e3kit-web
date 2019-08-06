@@ -19,39 +19,58 @@ async function main() {
 
 async function initializeUsers() {
     log(`Initializing ${alice.identity}`);
-    await alice.initialize().catch(e => log(`Failed initializing ${alice.identity}: ${e}`));
+
+    try      { await alice.initialize() }
+    catch(e) { log(`Failed initializing ${alice.identity}: ${e}`); }
 
     log(`Initializing ${bob.identity}`);
-    await bob.initialize().catch(e => log(`Failed initializing ${bob.identity}: ${e}`));
+
+    try      { await bob.initialize() }
+    catch(e) { log(`Failed initializing ${bob.identity}: ${e}`); }
 }
 
 async function registerUsers() {
     log(`Registering ${alice.identity}`);
-    await alice.register().catch(e => log(`Failed registering ${alice.identity}: ${e}`));
+
+    try      { await alice.register(); }
+    catch(e) { log(`Failed registering ${alice.identity}: ${e}`); }
 
     log(`Registering ${bob.identity}`);
-    await bob.register().catch(e => log(`Failed registering ${bob.identity}: ${e}`));
+
+    try      { await bob.register(); } 
+    catch(e) { log(`Failed registering ${bob.identity}: ${e}`); }
 }
 
 async function registerUsers() {
     log(`Registering ${alice.identity}`);
-    await alice.register().catch(e => log(`Failed registering ${alice.identity}: ${e}`));
+
+    try      { await alice.register(); }
+    catch(e) { log(`Failed registering ${alice.identity}: ${e}`); }
 
     log(`Registering ${bob.identity}`);
-    await bob.register().catch(e => log(`Failed registering ${bob.identity}: ${e}`));
+
+    try      { await bob.register(); }
+    catch(e) { log(`Failed registering ${bob.identity}: ${e}`); }
 }
 
 async function lookupPublicKeys() {
     log(`Looking up ${bob.identity}'s public key`);
-    bobLookup = await alice.lookupPublicKeys([bob.identity]).catch(e => log(`Failed looking up ${bob.identity}'s public key: ${e}`));
+
+    try      { bobLookup = await alice.lookupPublicKeys([bob.identity]); }
+    catch(e) { log(`Failed looking up ${bob.identity}'s public key: ${e}`); }
 
     log(`Looking up ${alice.identity}'s public key`);
-    aliceLookup = await bob.lookupPublicKeys([alice.identity]).catch(e => log(`Failed looking up ${alice.identity}'s public key: ${e}`));
+
+    try      { aliceLookup = await bob.lookupPublicKeys([alice.identity]); }
+    catch(e) { log(`Failed looking up ${alice.identity}'s public key: ${e}`); }
 }
 
 async function encryptAndDecrypt() {
+    let aliceEncryptedText = null
+    let bobEncryptedText = null
+
     try {
-        let aliceEncryptedText = await alice.encrypt(`Hello ${bob.identity}!`, bobLookup);
+        aliceEncryptedText = await alice.encrypt(`Hello ${bob.identity}!`, bobLookup);
         log(`${alice.identity} encrypts and signs: '${aliceEncryptedText}'`);
     } catch(err) {
         log(`${alice.identity} failed encrypting and/or signing: '${err}'`)
@@ -65,13 +84,13 @@ async function encryptAndDecrypt() {
     }
 
     try {
-        let bobEncryptedText = await bob.encrypt(`Hello ${alice.identity}!`, aliceLookup);
+        bobEncryptedText = await bob.encrypt(`Hello ${alice.identity}!`, aliceLookup);
         log(`${bob.identity} encrypts and signs: '${bobEncryptedText}'`);
     } catch(err) {
         log(`${bob.identity} failed encrypting and/or signing: '${err}'`)
     }
 
-    try{
+    try {
         let bobDecryptedText = await alice.decrypt(bobEncryptedText, bobLookup[bob.identity]);
         log(`${alice.identity} decrypts and verifies ${bob.identity}'s signature: '${bobDecryptedText}'`);
     } catch(err) {
