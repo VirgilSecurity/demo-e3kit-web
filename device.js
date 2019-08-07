@@ -160,4 +160,16 @@ class Device {
         //# end of snippet: e3kit_restore_private_key
     }
 
+    async rotatePrivateKey() {
+        const eThree = this.eThree;
+
+        if (!eThree) {
+            throw new Error(`eThree not initialized`);
+        }
+
+        //# start of snippet: e3kit_rotate_private_key
+        await eThree.rotatePrivateKey();
+        //# end of snippet: e3kit_rotate_private_key
+    }
+
 }
