@@ -101,7 +101,7 @@ class Device {
             this.log(`Failed looking up ${identities}'s public key: ${err}`);
         }
 
-        this.lookupResult = lookupResult;
+        return lookupResult;
     }
 
     async encrypt(text, recipientPublicKey) {
