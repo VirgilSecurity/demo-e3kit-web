@@ -110,9 +110,9 @@ class Device {
         let encryptedText = null;
 
         try {
-            //# start of snippet: e3kit_encrypt
+            //# start of snippet: e3kit_sign_and_encrypt
             encryptedText = await eThree.encrypt(text, recipientPublicKey);
-            //# end of snippet: e3kit_encrypt
+            //# end of snippet: e3kit_sign_and_encrypt
             this.log(`Encrypted and signed: '${encryptedText}'`);
         } catch(err) {
             this.log(`Failed encrypting and signing: ${err}`);
@@ -127,9 +127,9 @@ class Device {
         let decryptedText = null;
 
         try {
-            //# start of snippet: e3kit_decrypt
+            //# start of snippet: e3kit_decrypt_and_verify
             decryptedText  = await eThree.decrypt(text, senderPublicKey);
-            //# end of snippet: e3kit_decrypt
+            //# end of snippet: e3kit_decrypt_and_verify
             this.log(`Decrypted and verified: ${decryptedText}`)
         } catch(err) {
             this.log(`Failed decrypting and verifying: ${err}`);
