@@ -2,8 +2,8 @@ const log = e => {
     document.getElementById('logs').innerHTML += `${e}<br/>`;
 }
 
-const alice = new Device('Charles');
-const bob = new Device('Stephan');
+const alice = new Device('Alice');
+const bob = new Device('Bob');
 
 let bobLookup = null;
 let aliceLookup = null;
