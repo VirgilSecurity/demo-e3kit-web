@@ -124,14 +124,18 @@ class Device {
     async decrypt(text, senderPublicKey) {
         const eThree = this.getEThree();
 
+        let decryptedText = null;
+
         try {
             //# start of snippet: e3kit_decrypt
-            const decryptedText = await eThree.decrypt(text, senderPublicKey);
+            decryptedText  = await eThree.decrypt(text, senderPublicKey);
             //# end of snippet: e3kit_decrypt
             this.log(`Decrypted and verified: ${decryptedText}`)
         } catch(err) {
             this.log(`Failed decrypting and verifying: ${err}`);
         }
+
+        return decryptedText;
     }
 
     async backupPrivateKey(password) {
