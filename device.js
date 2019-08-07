@@ -47,10 +47,10 @@ class Device {
         //# end of snippet: e3kit_jwt_callback
 
         //# start of snippet: e3kit_initialize
-        this.eThree = await EThree.initialize(getVirgilToken);
+        const eThree = await EThree.initialize(getVirgilToken);
         //# end of snippet: e3kit_initialize
 
-        return this.eThree;
+        this.eThree = eThree;
     }
 
     async register() {
@@ -60,11 +60,9 @@ class Device {
             throw new Error(`eThree not initialized`);
         }
 
-        //# start of snippet: e3kit_has_local_private_key
-        if (eThree.hasLocalPrivateKey()) {
+        if (hasLocalPrivateKey()) {
             eThree.cleanup();
         }
-        //# end of snippet: e3kit_has_local_private_key
 
         try {
             //# start of snippet: e3kit_register
@@ -93,7 +91,7 @@ class Device {
         const lookup = await eThree.lookupPublicKeys(identities)
         //# end of snippet: e3kit_lookup_public_keys
 
-        return lookup
+        return lookup;
     }
 
     async encrypt(text, lookupResult) {
@@ -107,7 +105,7 @@ class Device {
         let encryptedText = await eThree.encrypt(text, lookupResult);
         //# end of snippet: e3kit_encrypt
 
-        return encryptedText
+        return encryptedText;
     }
 
     async decrypt(text, senderPublicKey) {
@@ -121,6 +119,45 @@ class Device {
         let decryptedText = await eThree.decrypt(text, senderPublicKey);
         //# end of snippet: e3kit_decrypt
 
-        return decryptedText
+        return decryptedText;
     }
+
+    async hasLocalPrivateKey() {
+        const eThree = this.eThree;
+
+        if (!eThree) {
+            throw new Error(`eThree not initialized`);
+        }
+
+        //# start of snippet: e3kit_has_local_private_key
+        let hasLocalPrivateKey = await eThree.hasLocalPrivateKey();
+        //# end of snippet: e3kit_has_local_private_key
+
+        return hasLocalPrivateKey;
+    }
+
+    async backupPrivateKey(password) {
+        const eThree = this.eThree;
+
+        if (!eThree) {
+            throw new Error(`eThree not initialized`);
+        }
+
+        //# start of snippet: e3kit_backup_private_key
+        await eThree.backupPrivateKey(password);
+        //# end of snippet: e3kit_backup_private_key
+    }
+
+    async restorePrivateKey(password) {
+        const eThree = this.eThree;
+
+        if (!eThree) {
+            throw new Error(`eThree not initialized`);
+        }
+
+        //# start of snippet: e3kit_restore_private_key
+        await eThree.restorePrivateKey(password);
+        //# end of snippet: e3kit_restore_private_key
+    }
+
 }
