@@ -2,8 +2,8 @@ const log = e => {
     document.getElementById('logs').innerHTML += `${e}<br/>`;
 }
 
-const alice = new Device('Alice');
-const bob = new Device('Bob');
+const alice = new Device('Charles');
+const bob = new Device('Stephan');
 
 let bobLookup = null;
 let aliceLookup = null;
@@ -11,89 +11,92 @@ let aliceLookup = null;
 main();
 
 async function main() {
+    log('* Testing main methods:');
+
+    log('<br/>----- EThree.initialize -----');
     await initializeUsers();
+    log('<br/>----- EThree.register -----');
     await registerUsers();
+    log('<br/>----- EThree.lookupPublicKeys -----');
     await lookupPublicKeys();
+    log('<br/>----- EThree.encrypt & EThree.decrypt -----');
     await encryptAndDecrypt();
+
+    log('<br/>* Testing private key backup methods:');
+
+    log('<br/>----- EThree.backupPrivateKey -----');
+    await backupPrivateKeys();
+    log('<br/>----- EThree.changePassword -----');
+    await changePasswords();
+    log('<br/>----- EThree.restorePrivateKey -----');
+    await restorePrivateKeys();
+    log('<br/>----- EThree.resetPrivateKeyBackup -----');
+    await resetPrivateKeyBackups();
+
+    log('<br/>* Testing additional methods:');
+
+    log('<br/>----- EThree.rotatePrivateKey -----');
+    await rotatePrivateKeys();
+    log('<br/>----- EThree.cleanup -----');
+    await cleanup();
+    log('<br/>----- EThree.unregister -----');
+    await unregisterUsers();
 }
 
 async function initializeUsers() {
-    log(`Initializing ${alice.identity}`);
-
-    try      { await alice.initialize() }
-    catch(e) { log(`Failed initializing ${alice.identity}: ${e}`); }
-
-    log(`Initializing ${bob.identity}`);
-
-    try      { await bob.initialize() }
-    catch(e) { log(`Failed initializing ${bob.identity}: ${e}`); }
+    await alice.initialize();
+    await bob.initialize();
 }
 
 async function registerUsers() {
-    log(`Registering ${alice.identity}`);
-
-    try      { await alice.register(); }
-    catch(e) { log(`Failed registering ${alice.identity}: ${e}`); }
-
-    log(`Registering ${bob.identity}`);
-
-    try      { await bob.register(); } 
-    catch(e) { log(`Failed registering ${bob.identity}: ${e}`); }
-}
-
-async function registerUsers() {
-    log(`Registering ${alice.identity}`);
-
-    try      { await alice.register(); }
-    catch(e) { log(`Failed registering ${alice.identity}: ${e}`); }
-
-    log(`Registering ${bob.identity}`);
-
-    try      { await bob.register(); }
-    catch(e) { log(`Failed registering ${bob.identity}: ${e}`); }
+    await alice.register(); 
+    await bob.register();
 }
 
 async function lookupPublicKeys() {
-    log(`Looking up ${bob.identity}'s public key`);
-
-    try      { bobLookup = await alice.lookupPublicKeys([bob.identity]); }
-    catch(e) { log(`Failed looking up ${bob.identity}'s public key: ${e}`); }
-
-    log(`Looking up ${alice.identity}'s public key`);
-
-    try      { aliceLookup = await bob.lookupPublicKeys([alice.identity]); }
-    catch(e) { log(`Failed looking up ${alice.identity}'s public key: ${e}`); }
+    bobLookup = await alice.lookupPublicKeys([bob.identity]);
+    aliceLookup = await bob.lookupPublicKeys([alice.identity]);
 }
 
 async function encryptAndDecrypt() {
-    let aliceEncryptedText = null
-    let bobEncryptedText = null
+    let aliceEncryptedText = await alice.encrypt(`Hello ${bob.identity}!`, bobLookup);
+    await bob.decrypt(aliceEncryptedText, aliceLookup[alice.identity]);
 
-    try {
-        aliceEncryptedText = await alice.encrypt(`Hello ${bob.identity}!`, bobLookup);
-        log(`${alice.identity} encrypts and signs: '${aliceEncryptedText}'`);
-    } catch(err) {
-        log(`${alice.identity} failed encrypting and/or signing: '${err}'`)
-    }
+    let bobEncryptedText = await bob.encrypt(`Hello ${alice.identity}!`, aliceLookup);
+    await alice.decrypt(bobEncryptedText, bobLookup[bob.identity]);
+}
 
-    try {
-        let aliceDecryptedText = await bob.decrypt(aliceEncryptedText, aliceLookup[alice.identity]);
-        log(`${bob.identity} decrypts and verifies ${alice.identity}'s signature: '${aliceDecryptedText}'`);
-    } catch(err) {
-        log(`${bob.identity} failed decrypting and/or verifying: '${err}'`)
-    }
+async function backupPrivateKeys() {
+    await alice.backupPrivateKey(`${alice.identity}_pkeypassword`);
+    await bob.backupPrivateKey(`${bob.identity}_pkeypassword`);
+}
 
-    try {
-        bobEncryptedText = await bob.encrypt(`Hello ${alice.identity}!`, aliceLookup);
-        log(`${bob.identity} encrypts and signs: '${bobEncryptedText}'`);
-    } catch(err) {
-        log(`${bob.identity} failed encrypting and/or signing: '${err}'`)
-    }
+async function changePasswords() {
+    await alice.changePassword(`${alice.identity}_pkeypassword`,`${alice.identity}_pkeypassword_new`);
+    await bob.changePassword(`${bob.identity}_pkeypassword`, `${bob.identity}_pkeypassword_new`);
+}
 
-    try {
-        let bobDecryptedText = await alice.decrypt(bobEncryptedText, bobLookup[bob.identity]);
-        log(`${alice.identity} decrypts and verifies ${bob.identity}'s signature: '${bobDecryptedText}'`);
-    } catch(err) {
-        log(`${alice.identity} failed decrypting and/or verifying: '${err}'`)
-    }
+async function restorePrivateKeys() {
+    await alice.restorePrivateKey(`${alice.identity}_pkeypassword_new`);
+    await bob.restorePrivateKey(`${bob.identity}_pkeypassword_new`);
+}
+
+async function resetPrivateKeyBackups() {
+    await alice.resetPrivateKeyBackup();
+    await bob.resetPrivateKeyBackup();
+}
+
+async function rotatePrivateKeys() {
+    await alice.rotatePrivateKey();
+    await bob.rotatePrivateKey();
+}
+
+async function cleanup() {
+    await alice.cleanup();
+    await bob.cleanup();
+}
+
+async function unregisterUsers() {
+    await alice.unregister();
+    await bob.unregister();
 }
