@@ -110,10 +110,12 @@ class Device {
         let encryptedText = null;
 
         try {
+            let then = new Date;
             //# start of snippet: e3kit_sign_and_encrypt
             encryptedText = await eThree.encrypt(text, recipientPublicKey);
             //# end of snippet: e3kit_sign_and_encrypt
-            this.log(`Encrypted and signed: '${encryptedText}'`);
+            let now = new Date;
+            this.log(`Encrypted and signed: '${encryptedText}'. Took: ${now - then}ms`);
         } catch(err) {
             this.log(`Failed encrypting and signing: ${err}`);
         }
@@ -127,10 +129,12 @@ class Device {
         let decryptedText = null;
 
         try {
+            let then = new Date;
             //# start of snippet: e3kit_decrypt_and_verify
             decryptedText  = await eThree.decrypt(text, senderPublicKey);
             //# end of snippet: e3kit_decrypt_and_verify
-            this.log(`Decrypted and verified: ${decryptedText}`)
+            let now = new Date;
+            this.log(`Decrypted and verified: ${decryptedText}. Took: ${now - then}ms`)
         } catch(err) {
             this.log(`Failed decrypting and verifying: ${err}`);
         }
