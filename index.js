@@ -59,10 +59,10 @@ async function lookupPublicKeys() {
 }
 
 async function encryptAndDecrypt() {
-    let aliceEncryptedText = await alice.encrypt(`Hello ${bob.identity}!`, bobLookup);
+    let aliceEncryptedText = await alice.encrypt(`Hello ${bob.identity}! How are you?`, bobLookup);
     await bob.decrypt(aliceEncryptedText, aliceLookup[alice.identity]);
 
-    let bobEncryptedText = await bob.encrypt(`Hello ${alice.identity}!`, aliceLookup);
+    let bobEncryptedText = await bob.encrypt(`Hello ${alice.identity}! How are you?`, aliceLookup);
     await alice.decrypt(bobEncryptedText, bobLookup[bob.identity]);
 }
 

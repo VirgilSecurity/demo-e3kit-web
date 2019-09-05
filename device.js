@@ -3,6 +3,10 @@ const EThree = E3kit.EThree;
 class Device {
     constructor(identity) {
         this.identity = identity;
+
+        // setting this to true can cause a momentary hang in the browser
+        // because encryption and decryption will be ran 100x each.
+        this.benchmarking = false;
     }
 
     log(e) {
@@ -108,14 +112,17 @@ class Device {
         const eThree = this.getEThree();
 
         let encryptedText = null;
+        let repetitions = this.benchmarking ? 100 : 1;
 
+        const then = new Date;
         try {
-            let then = new Date;
-            //# start of snippet: e3kit_sign_and_encrypt
-            encryptedText = await eThree.encrypt(text, recipientPublicKey);
-            //# end of snippet: e3kit_sign_and_encrypt
-            let now = new Date;
-            this.log(`Encrypted and signed: '${encryptedText}'. Took: ${now - then}ms`);
+            for (let i = 0; i < repetitions; i++) {
+                //# start of snippet: e3kit_sign_and_encrypt
+                encryptedText = await eThree.encrypt(text, recipientPublicKey);
+                //# end of snippet: e3kit_sign_and_encrypt
+            }
+            let time = ((new Date) - then)/repetitions;
+            this.log(`Encrypted and signed: '${encryptedText}'. Took: ${time}ms`);
         } catch(err) {
             this.log(`Failed encrypting and signing: ${err}`);
         }
@@ -127,14 +134,17 @@ class Device {
         const eThree = this.getEThree();
 
         let decryptedText = null;
+        let repetitions = this.benchmarking ? 100 : 1;
 
+        const then = new Date;
         try {
-            let then = new Date;
-            //# start of snippet: e3kit_decrypt_and_verify
-            decryptedText  = await eThree.decrypt(text, senderPublicKey);
-            //# end of snippet: e3kit_decrypt_and_verify
-            let now = new Date;
-            this.log(`Decrypted and verified: ${decryptedText}. Took: ${now - then}ms`)
+            for (let i = 0; i < repetitions; i++) {
+                //# start of snippet: e3kit_decrypt_and_verify
+                decryptedText = await eThree.decrypt(text, senderPublicKey);
+                //# end of snippet: e3kit_decrypt_and_verify
+            }
+            let time = ((new Date) - then)/repetitions;
+            this.log(`Decrypted and verified: '${decryptedText}'. Took: ${time}ms`);
         } catch(err) {
             this.log(`Failed decrypting and verifying: ${err}`);
         }
