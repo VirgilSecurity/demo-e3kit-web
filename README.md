@@ -2,7 +2,7 @@
 
 ## Introduction
 
-<a href="https://developer.virgilsecurity.com/docs"><img width="230px" src="https://cdn.virgilsecurity.com/assets/images/github/logos/virgil-logo-red.png" align="left" hspace="10" vspace="6"></a> This is a sample Web project for [Virgil Security](https://virgilsecurity.com)'s [E3Kit SDK](https://github.com/VirgilSecurity/virgil-e3kit-x) which simplifies work with Virgil services and presents an easy-to-use API for adding a security layer to any application. E3kit interacts with Virgil Cards Service, Keyknox Service and Pythia Service.
+<a href="https://developer.virgilsecurity.com/docs"><img width="230px" src="https://cdn.virgilsecurity.com/assets/images/github/logos/virgil-logo-red.png" align="left" hspace="10" vspace="6"></a> This is a sample Web project for [Virgil Security](https://virgilsecurity.com)'s [E3Kit SDK](https://github.com/VirgilSecurity/virgil-e3kit-x) which simplifies work with Virgil services and presents an easy-to-use API for adding a security layer to any application. E3Kit interacts with Virgil Cards Service, Keyknox Service and Pythia Service.
 Virgil E3Kit allows you to setup user encryption with multidevice support in just a few simple steps.
 
 ## Requirements
