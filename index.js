@@ -17,8 +17,8 @@ async function main() {
     await initializeUsers();
     log('<br/>----- EThree.register -----');
     await registerUsers();
-    log('<br/>----- EThree.lookupPublicKeys -----');
-    await lookupPublicKeys();
+    log('<br/>----- EThree.findUsers -----');
+    await findUsers();
     log('<br/>----- EThree.encrypt & EThree.decrypt -----');
     await encryptAndDecrypt();
 
@@ -53,9 +53,9 @@ async function registerUsers() {
     await bob.register();
 }
 
-async function lookupPublicKeys() {
-    bobLookup = await alice.lookupPublicKeys([bob.identity]);
-    aliceLookup = await bob.lookupPublicKeys([alice.identity]);
+async function findUsers() {
+    bobLookup = await alice.findUsers([bob.identity]);
+    aliceLookup = await bob.findUsers([alice.identity]);
 }
 
 async function encryptAndDecrypt() {
