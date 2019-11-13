@@ -163,7 +163,7 @@ class Device {
         } catch(err) {
             this.log(`Failed backing up private key: ${err}`);
             if (err.name === 'CloudEntryExistsError') {
-                await eThree.resetPrivateKeyBackup(password);
+                await eThree.resetPrivateKeyBackup();
                 this.log(`Reset private key backup. Trying again...`);
                 await this.backupPrivateKey(password);
             }
