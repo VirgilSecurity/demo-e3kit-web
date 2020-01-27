@@ -68,7 +68,7 @@ class Device {
 
     getEThree() {
         if (!this.eThree) {
-            throw new Error(`eThree not initialized for ${identity}`);
+            throw new Error(`eThree not initialized for ${this.identity}`);
         }
 
         return this.eThree;
