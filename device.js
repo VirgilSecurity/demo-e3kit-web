@@ -92,20 +92,20 @@ class Device {
         }
     }
 
-    async lookupPublicKeys(identities) {
+    async findUsers(identities) {
         const eThree = this.getEThree();
-        let lookupResult = null;
+        let findUsersResult = null;
 
         try {
-            //# start of snippet: e3kit_lookup_public_keys
-            lookupResult = await eThree.lookupPublicKeys(identities)
-            //# end of snippet: e3kit_lookup_public_keys
+            //# start of snippet: e3kit_find_users
+            findUsersResult = await eThree.findUsers(identities)
+            //# end of snippet: e3kit_find_users
             this.log(`Looked up ${identities}'s public key`);
         } catch(err) {
             this.log(`Failed looking up ${identities}'s public key: ${err}`);
         }
 
-        return lookupResult;
+        return findUsersResult;
     }
 
     async encrypt(text, recipientPublicKey) {
