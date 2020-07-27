@@ -100,15 +100,15 @@ class Device {
             //# start of snippet: e3kit_find_users
             findUsersResult = await eThree.findUsers(identities)
             //# end of snippet: e3kit_find_users
-            this.log(`Looked up ${identities}'s public key`);
+            this.log(`Looked up ${identities}'s cards with public keys`);
         } catch(err) {
-            this.log(`Failed looking up ${identities}'s public key: ${err}`);
+            this.log(`Failed looking up ${identities}'s cards with public keys: ${err}`);
         }
 
         return findUsersResult;
     }
 
-    async encrypt(text, recipientPublicKey) {
+    async authEncrypt(text, recipientCards) {
         const eThree = this.getEThree();
 
         let encryptedText = null;
@@ -118,7 +118,7 @@ class Device {
         try {
             for (let i = 0; i < repetitions; i++) {
                 //# start of snippet: e3kit_sign_and_encrypt
-                encryptedText = await eThree.encrypt(text, recipientPublicKey);
+                encryptedText = await eThree.authEncrypt(text, recipientCards);
                 //# end of snippet: e3kit_sign_and_encrypt
             }
             let time = ((new Date) - then)/repetitions;
@@ -130,7 +130,7 @@ class Device {
         return encryptedText;
     }
 
-    async decrypt(text, senderPublicKey) {
+    async authDecrypt(text, senderCards) {
         const eThree = this.getEThree();
 
         let decryptedText = null;
@@ -140,7 +140,7 @@ class Device {
         try {
             for (let i = 0; i < repetitions; i++) {
                 //# start of snippet: e3kit_decrypt_and_verify
-                decryptedText = await eThree.decrypt(text, senderPublicKey);
+                decryptedText = await eThree.authDecrypt(text, senderCards);
                 //# end of snippet: e3kit_decrypt_and_verify
             }
             let time = ((new Date) - then)/repetitions;
