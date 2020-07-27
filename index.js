@@ -19,7 +19,7 @@ async function main() {
     await registerUsers();
     log('<br/>----- EThree.findUsers -----');
     await findUsers();
-    log('<br/>----- EThree.encrypt & EThree.decrypt -----');
+    log('<br/>----- EThree.authEncrypt & EThree.authDecrypt -----');
     await encryptAndDecrypt();
 
     log('<br/>* Testing private key backup methods:');
@@ -59,11 +59,11 @@ async function findUsers() {
 }
 
 async function encryptAndDecrypt() {
-    let aliceEncryptedText = await alice.encrypt(`Hello ${bob.identity}! How are you?`, bobLookup);
-    await bob.decrypt(aliceEncryptedText, aliceLookup[alice.identity]);
+    let aliceEncryptedText = await alice.authEncrypt(`Hello ${bob.identity}! How are you?`, bobLookup);
+    await bob.authDecrypt(aliceEncryptedText, aliceLookup[alice.identity]);
 
-    let bobEncryptedText = await bob.encrypt(`Hello ${alice.identity}! How are you?`, aliceLookup);
-    await alice.decrypt(bobEncryptedText, bobLookup[bob.identity]);
+    let bobEncryptedText = await bob.authEncrypt(`Hello ${alice.identity}! How are you?`, aliceLookup);
+    await alice.authDecrypt(bobEncryptedText, bobLookup[bob.identity]);
 }
 
 async function backupPrivateKeys() {
