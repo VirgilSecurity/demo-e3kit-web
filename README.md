@@ -31,6 +31,9 @@ This demo will automatically go through the following steps:
 6. **Testing private key backup methods**. The app demonstrates backup creation, changing backup password, restoring private keys from the backup and backup reset.
 7. **Testing additional methods**. The demo also goes through private key rotation, private key cleanup and unregistering users.
 
+<img src="img/demo.png" alt="Demo screenshot 1">
+<img src="img/demo1.png" alt="Demo screenshot 2">
+
 ## License
 
 This library is released under the [3-clause BSD License](LICENSE).
